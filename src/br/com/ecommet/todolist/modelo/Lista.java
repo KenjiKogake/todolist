@@ -2,10 +2,25 @@ package br.com.ecommet.todolist.modelo;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+@Entity
 public class Lista {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@Column(length = 100, nullable=false)
 	private String titulo;
+
+	@OneToMany(mappedBy="lista", cascade=CascadeType.ALL, orphanRemoval=true)
 	private List<ItemLista> itens;
 
 	public Long getId() {
@@ -31,14 +46,14 @@ public class Lista {
 	public void setItens(List<ItemLista> itens) {
 		this.itens = itens;
 	}
-	
+
 	public boolean isRealizada() {
 		for (ItemLista item : itens) {
 			if (!item.isFeito()) {
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
 
